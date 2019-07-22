@@ -3,8 +3,14 @@ import ReactDOM from 'react-dom';
 import App from './components/App';
 import axios from 'axios';
 import Weather from './classes/Weather'
+import svgSearch from '../static/img/src/search-solid.svg';
 let cityInput = document.getElementById('cityInput');
-
+window.onload=()=>{
+    function setBackground(){cityInput.style.backgroundImage = `url(${svgSearch})`;}
+    setBackground();
+    cityInput.addEventListener('blur', setBackground);
+    cityInput.addEventListener('focus', ()=>{cityInput.style.backgroundImage = ''});
+}
 cityInput.addEventListener('keyup', (e)=>  {
     e.preventDefault();
     if(e.keyCode ==13){
@@ -19,7 +25,7 @@ async function getCurentWeather(cityName, callback) {
         console.log(NewWeather);
         callback(NewWeather);
     } catch (error) {
-        if (error.code = 500) console.dir(error)
+        ReactDOM.render(<App error = {error}/>, document.getElementById('root'));
     }
 }
 

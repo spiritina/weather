@@ -38,14 +38,19 @@ body {
     padding: 15px;
     box-sizing: border-box;
     margin: 0;
+    box-sizing: border-box;
+    padding: 20px;
 }
 #cityInput{
     border-radius: 20px;
     padding: 10px;
     background-image: url('../img/src/search-solid.svg');
     background-repeat: no-repeat;
-    background-position: right;
-    background-size: contain;
+    background-position: right 10px center;
+    background-size: 15px;
+}
+#cityInput:focus{
+    background-image: none;
 }
 
 #searchField{

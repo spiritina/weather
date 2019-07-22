@@ -14,6 +14,7 @@ import svgCloudMoon from '../../static/img/src/cloud-moon-solid.svg';
 import svgSmog from '../../static/img/src/smog-solid.svg';
 import svgStorm from '../../static/img/src/poo-storm-solid.svg';
 import svgSnow from '../../static/img/src/snowflake-regular.svg';
+
 class App extends React.Component{
     constructor(props){
         super(props)
@@ -21,6 +22,7 @@ class App extends React.Component{
     }
     
     render(){
+        if (this.props.weather){
         let weather = this.props.weather;
         console.log(weather.weather.length);
         let weatherDescr = [];
@@ -116,7 +118,12 @@ class App extends React.Component{
                 </div>
             </div>
         )
+    }else if(this.props.error){
+        return(
+            <h2 className='weather' color='red'>Sorry, error has happened!</h2>
+        )
     }
+}
 }
 
 export default App;
