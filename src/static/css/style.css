@@ -44,13 +44,9 @@ body {
 #cityInput{
     border-radius: 20px;
     padding: 10px;
-    background-image: url('../img/src/search-solid.svg');
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 15px;
-}
-#cityInput:focus{
-    background-image: none;
 }
 
 #searchField{

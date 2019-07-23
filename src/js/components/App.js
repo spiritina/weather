@@ -18,67 +18,19 @@ import svgSnow from '../../static/img/src/snowflake-regular.svg';
 class App extends React.Component{
     constructor(props){
         super(props)
+        this.state = {
+            weather: this.props.weather
+        };
+        this.setWindDirection = this.setWindDirection.bind(this)
+        this.setWeatherDescription = this.setWeatherDescription.bind(this);
+        this.setTemperatureSVG = this.setTemperatureSVG.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
+        this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
         
     }
-    
-    render(){
-        if (this.props.weather){
-        let weather = this.props.weather;
-        console.log(weather.weather.length);
-        let weatherDescr = [];
-        let weatherDescrText = [];
-        for(let i=0; i < weather.weather.length; i++){
-            console.log(weather.weather)
-            if(weather.weather[i].main == "Rain"){
-                if(weather.weather[i].description=='heavy intensity shower rain'||weather.weather[i].description=='light intensity shower rain'||weather.weather[i].description=='medium intensity shower rain'){
-                    weatherDescr.push(<img className='temperature' key={i} src={svgRainShower} />)    
-                }
-                else{
-                    if (weather.timeOfDay == 'day'){
-                        weatherDescr.push(<img className='temperature' key={i} src={svgRain} />)
-                    };
-                    if (weather.timeOfDay == 'night'){
-                         weatherDescr.push(<img className='temperature' key={i} src={svgNightRain} />)
-                    };
-                }};
-            if (weather.weather[i].main == "Clear"&&weather.timeOfDay == 'day'){
-                weatherDescr.push(<img className='temperature' key={i} src={svgSun} />)
-            };
-            if (weather.weather[i].main == "Clear"&&weather.timeOfDay == 'night'){
-                weatherDescr.push(<img className='temperature' key={i} src={svgMoon} />)
-            };
-            if (weather.weather[i].main == "Clouds"){
-                if(weather.weather[i].description=='few clouds'&weather.timeOfDay=='day'){
-                    weatherDescr.push(<img className='temperature' key={i} src={svgCloudSun} />)
-                }else if(weather.weather[i].description=='few clouds'&weather.timeOfDay=='night'){
-                    weatherDescr.push(<img className='temperature' key={i} src={svgCloudMoon} />)
-                }else{
-                
-                weatherDescr.push(<img className='temperature' key={i} src={svgCloud} />)}
-            };
-            if (weather.weather[i].main == "Mist"){
-                weatherDescr.push(<img className='temperature' key={i} src={svgSmog} />)
-            };
-            if(weather.weather[i].description=='Thunderstorm'){
-                weatherDescr.push(<img className='temperature' key={i} src={svgStorm} />)    
-            };
-            if(weather.weather[i].description=='Snow'){
-                weatherDescr.push(<img className='temperature' key={i} src={svgSnow} />)    
-            };
-
-            weatherDescrText.push(<p key={i}>{weather.weather[i].description}</p>);
-        }
-        console.log(weatherDescr)
-        let temperatureSVG;
-        if (weather.temperature.max < 5) { 
-            temperatureSVG = svgTemperatureLow
-         }else if (weather.temperature.max < 27){
-            temperatureSVG = svgTemperatureMedium
-         } else {
-            temperatureSVG = svgTemperatureHight
-         }
-
-         let windDirectionDeg = weather.wind.direction;
+    setWindDirection(props){
+        let weather = props.weather;
+        let windDirectionDeg = weather.wind.direction;
          let windDirection;
          if (windDirectionDeg<20&&windDirectionDeg>340){
              windDirection = 'East'
@@ -99,30 +51,108 @@ class App extends React.Component{
             }else if (windDirection==undefined){
                 windDirection = ''
             }
-            
-            if (weather.wind.speed > 10){ <img className='temperature' key={weather.weather.length} src={svgWind} /> }
+            this.setState({windDirection: windDirection});
+    }
+
+    setWeatherDescription(props){
+        let weather = props.weather;
+        let weatherDescr = [];
+        let weatherDescrText = [];
+        for(let i=0; i < weather.weather.length; i++){
+            if(weather.weather[i].main == "Rain"){
+                if(weather.weather[i].description=='heavy intensity shower rain'||weather.weather[i].description=='light intensity shower rain'||weather.weather[i].description=='medium intensity shower rain'){
+                    weatherDescr.push(svgRainShower)    
+                }
+                else{
+                    if (weather.timeOfDay == 'day'){
+                        weatherDescr.push(svgRain)
+                    };
+                    if (weather.timeOfDay == 'night'){
+                         weatherDescr.push(svgNightRain)
+                    };
+                }};
+            if (weather.weather[i].main == "Clear"&&weather.timeOfDay == 'day'){
+                weatherDescr.push(svgSun)
+            };
+            if (weather.weather[i].main == "Clear"&&weather.timeOfDay == 'night'){
+                weatherDescr.push(svgMoon)
+            };
+            if (weather.weather[i].main == "Clouds"){
+                if(weather.weather[i].description=='few clouds'&weather.timeOfDay=='day'){
+                    weatherDescr.push(svgCloudSun)
+                }else if(weather.weather[i].description=='few clouds'&weather.timeOfDay=='night'){
+                    weatherDescr.push(svgCloudMoon)
+                }else{
+                
+                weatherDescr.push(svgCloud)}
+            };
+            if (weather.weather[i].main == "Mist"){
+                weatherDescr.push(svgSmog)
+            };
+            if(weather.weather[i].description=='Thunderstorm'){
+                weatherDescr.push(svgStorm)    
+            };
+            if(weather.weather[i].description=='Snow'){
+                weatherDescr.push(svgSnow)    
+            };
+
+            weatherDescrText.push(weather.weather[i].description);
+        }
+        if (weather.wind.speed > 10){weatherDescr.push(<img className='temperature' key={weather.weather.length} src={svgWind} /> )}
+        this.setState({weatherDescprotion: {
+                                            img: weatherDescr,
+                                            text: weatherDescrText
+        }})
+    }
+    setTemperatureSVG(props){
+        let weather = props.weather;
+        let temperatureSVG;
+        if (weather.temperature.max < 5) { 
+            temperatureSVG = svgTemperatureLow
+         }else if (weather.temperature.max < 27){
+            temperatureSVG = svgTemperatureMedium
+         } else {
+            temperatureSVG = svgTemperatureHight
+         }
+         this.setState({temperatureSVG: temperatureSVG})
+    }
+    componentWillMount(){  
+            this.setWindDirection(this.props);
+            this.setWeatherDescription(this.props);
+            this.setTemperatureSVG(this.props);
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        if(nextProps.weather != this.props.weather) return true; else return false;
+        
+    }
+    componentWillReceiveProps(nextProps){
+        this.setState({weather: nextProps.weather});
+        this.setWindDirection(nextProps);
+        this.setWeatherDescription(nextProps);
+        this.setTemperatureSVG(nextProps);
+    }
+    
+    render(){
+        let weatherDescrSVG = this.state.weatherDescprotion.img.map((src, index) => <img className='temperature' key={index} src={src} />)
+        let weatherDescrText = this.state.weatherDescprotion.text.map((text, index) => <p key={index}>{text}</p>)
         return(
             <div className='weather row'>
                 <div className="col">
-                    <h2>{weather.city}, {weather.country}</h2>
-                    <p>Max temperature: {Math.round(weather.temperature.max)} &#186; C</p>
-                    <p>Humidity: {weather.humidity} %</p>
-                    <p>Pressure: {weather.pressure} MP</p>
-                    <p>Wind: {weather.wind.speed} m/s {windDirection}</p>
+                    <h2>{this.state.weather.city}, {this.state.weather.country}</h2>
+                    <p>Max temperature: {Math.round(this.state.weather.temperature.max)} &#186; C</p>
+                    <p>Humidity: {this.state.weather.humidity} %</p>
+                    <p>Pressure: {this.state.weather.pressure} MP</p>
+                    <p>Wind: {this.state.weather.wind.speed} m/s {this.state.windDirection}</p>
                     {weatherDescrText}
                 </div>
                 <div className="col">
                     <div className="row">
-                        {weatherDescr}{<img className='temperature' src={temperatureSVG} />}
+                        {weatherDescrSVG}{<img className='temperature' src={this.state.temperatureSVG} />}
                     </div>
                 </div>
             </div>
         )
-    }else if(this.props.error){
-        return(
-            <h2 className='weather' color='red'>Sorry, error has happened!</h2>
-        )
-    }
 }
 }
 
