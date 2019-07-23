@@ -30,14 +30,10 @@ module.exports = {
       }},
       
       {
-        test: /\.(png|jpe?g|gif|svg)$/,
+        test: /\.svg$/,
         use: [
             {
-            loader: 'file-loader',
-            options: {               
-                    outputPath: 'images/',
-                    name: '[name].[ext]'
-                      }
+            loader: 'svg-sprite-loader'
             }
 
              ]

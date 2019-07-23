@@ -1,4 +1,5 @@
 import React from 'react';
+import Icon from './Icon';
 import svgTemperatureLow from '../../static/img/src/thermometer-quarter-solid.svg';
 import svgTemperatureMedium from '../../static/img/src/thermometer-half-solid.svg';
 import svgTemperatureHight from '../../static/img/src/thermometer-full-solid.svg';
@@ -98,7 +99,7 @@ class App extends React.Component{
 
             weatherDescrText.push(weather.weather[i].description);
         }
-        if (weather.wind.speed > 10){weatherDescr.push(<img className='temperature' key={weather.weather.length} src={svgWind} /> )}
+        if (weather.wind.speed > 10){weatherDescr.push(svgWind)}
         this.setState({weatherDescprotion: {
                                             img: weatherDescr,
                                             text: weatherDescrText
@@ -134,7 +135,7 @@ class App extends React.Component{
     }
     
     render(){
-        let weatherDescrSVG = this.state.weatherDescprotion.img.map((src, index) => <img className='temperature' key={index} src={src} />)
+        let weatherDescrSVG = this.state.weatherDescprotion.img.map((src, index) => <Icon className='temperature' key={index} glyph={src.id} viewBox={src.viewBox} /> );
         let weatherDescrText = this.state.weatherDescprotion.text.map((text, index) => <p key={index}>{text}</p>)
         return(
             <div className='weather row'>
@@ -148,7 +149,7 @@ class App extends React.Component{
                 </div>
                 <div className="col">
                     <div className="row">
-                        {weatherDescrSVG}{<img className='temperature' src={this.state.temperatureSVG} />}
+                        {weatherDescrSVG}{<Icon className='temperature' glyph={this.state.temperatureSVG.id} viewBox={this.state.temperatureSVG.viewBox} />}
                     </div>
                 </div>
             </div>
