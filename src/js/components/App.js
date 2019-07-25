@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from './Icon';
+import Weather from './Weather';
 import svgTemperatureLow from '../../static/img/src/thermometer-quarter-solid.svg';
 import svgTemperatureMedium from '../../static/img/src/thermometer-half-solid.svg';
 import svgTemperatureHight from '../../static/img/src/thermometer-full-solid.svg';
@@ -22,12 +22,6 @@ class App extends React.Component{
         this.state = {
             weather: this.props.weather
         };
-        this.setWindDirection = this.setWindDirection.bind(this)
-        this.setWeatherDescription = this.setWeatherDescription.bind(this);
-        this.setTemperatureSVG = this.setTemperatureSVG.bind(this);
-        this.componentWillMount = this.componentWillMount.bind(this);
-        this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
-        
     }
     setWindDirection(props){
         let weather = props.weather;
@@ -135,24 +129,8 @@ class App extends React.Component{
     }
     
     render(){
-        let weatherDescrSVG = this.state.weatherDescprotion.img.map((src, index) => <Icon className='temperature' key={index} glyph={src.id} viewBox={src.viewBox} /> );
-        let weatherDescrText = this.state.weatherDescprotion.text.map((text, index) => <p key={index}>{text}</p>)
         return(
-            <div className='weather row'>
-                <div className="col">
-                    <h2>{this.state.weather.city}, {this.state.weather.country}</h2>
-                    <p>Max temperature: {Math.round(this.state.weather.temperature.max)} &#186; C</p>
-                    <p>Humidity: {this.state.weather.humidity} %</p>
-                    <p>Pressure: {this.state.weather.pressure} MP</p>
-                    <p>Wind: {this.state.weather.wind.speed} m/s {this.state.windDirection}</p>
-                    {weatherDescrText}
-                </div>
-                <div className="col">
-                    <div className="row">
-                        {weatherDescrSVG}{<Icon className='temperature' glyph={this.state.temperatureSVG.id} viewBox={this.state.temperatureSVG.viewBox} />}
-                    </div>
-                </div>
-            </div>
+       <Weather weather={this.state} />
         )
 }
 }
