@@ -10,7 +10,6 @@ render(){
                                                                                     glyph={src.id} 
                                                                                     viewBox={src.viewBox} /> );
     let weatherDescrText = weather.weatherDescprotion.text.map((text, index) => <p key={index}>{text}</p>)
-    console.log(this.props)
     return(
         <div className='weather row'>
             <div className="col">

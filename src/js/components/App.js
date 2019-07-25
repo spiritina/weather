@@ -24,8 +24,8 @@ class App extends React.Component{
         };
     }
     setWindDirection(props){
-        let weather = props.weather;
-        let windDirectionDeg = weather.wind.direction;
+         let weather = props.weather;
+         let windDirectionDeg = weather.wind.direction;
          let windDirection;
          if (windDirectionDeg<20&&windDirectionDeg>340){
              windDirection = 'East'
