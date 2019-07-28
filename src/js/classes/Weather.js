@@ -1,6 +1,7 @@
 class Weather{
     constructor(obj){
         this.city = obj.name;
+        this.cityID = obj.id;
         this.country = obj.sys.country;
         this.date = new Date().getTime()/1000;
         this.temperature = {};
@@ -13,14 +14,11 @@ class Weather{
         this.weather = obj.weather;
         this.sunset = obj.sys.sunset;
         this.sunrise = obj.sys.sunrise;
-        this.getDayOrNight = this.getDayOrNight.bind(this);
-        this.timeOfDay = this.getDayOrNight()
+        this.getDayTime();
     }
-    getDayOrNight(){
-       if (this.sunrise<this.date&&this.sunset>this.date) {
-           return 'day'
-        }else {
-        return 'night'};
+    getDayTime = ()=>{
+       if (this.sunrise<this.date&&this.sunset>this.date) 
+           {this. isDay = true;} else {this.isDay = false;}
     }
 }
 

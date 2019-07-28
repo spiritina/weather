@@ -23,6 +23,15 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.сss$/i,
+        use: [
+          'handlebars-loader', 
+          'extract-loader',
+          'css-loader',
+        ],
+      },
+      
+      {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
