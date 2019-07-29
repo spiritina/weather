@@ -2,23 +2,9 @@ import React from 'react';
 import Weather from './Weather';
 import Header from './Header';
 import MyError from './MyError';
-import svgTemperatureLow from '../../static/img/src/thermometer-quarter-solid.svg';
-import svgTemperatureMedium from '../../static/img/src/thermometer-half-solid.svg';
-import svgTemperatureHight from '../../static/img/src/thermometer-full-solid.svg';
-import svgRain from '../../static/img/src/cloud-rain-solid.svg';
-import svgRainShower from '../../static/img/src/cloud-showers-heavy-solid.svg';
-import svgNightRain from '../../static/img/src/cloud-rain-solid.svg';
-import svgWind from '../../static/img/src/wind-solid.svg';
-import svgSun from '../../static/img/src/sun-solid.svg';
-import svgMoon from '../../static/img/src/moon-solid.svg';
-import svgCloud from '../../static/img/src/cloud-solid.svg';
-import svgCloudSun from '../../static/img/src/cloud-sun-solid.svg';
-import svgCloudMoon from '../../static/img/src/cloud-moon-solid.svg';
-import svgSmog from '../../static/img/src/smog-solid.svg';
-import svgStorm from '../../static/img/src/poo-storm-solid.svg';
-import svgSnow from '../../static/img/src/snowflake-regular.svg';
+import svgs from '../maps/svgs'
 import getCurrentWeather from '../API';
-import CurentCities from './SavedCities';
+import SavedCities from './SavedCities';
 
 class App extends React.Component{
     constructor(props){
@@ -29,7 +15,6 @@ class App extends React.Component{
         };
         if(localStorage.getItem('savedCities')){
             savedCities = JSON.parse(JSON.parse(localStorage.getItem('savedCities')));
-            console.log(savedCities);
             let savedCity = {}, str;
             for (let i=0; i<savedCities.length; i++){
                
@@ -55,6 +40,7 @@ class App extends React.Component{
         }
     }
     addCity= (city) =>{
+        console.log('add')
         let cities = this.state.savedCities;
         if(cities.indexOf(city)===-1){
             cities.push(city);
@@ -95,27 +81,27 @@ class App extends React.Component{
         for(let i=0; i < weather.weather.length; i++){
             if(weather.weather[i].main == "Rain"){
                 if(weather.weather[i].description=='heavy intensity shower rain'||weather.weather[i].description=='light intensity shower rain'||weather.weather[i].description=='medium intensity shower rain'){
-                    weatherDescr.push(svgRainShower)    
+                    weatherDescr.push(svgs.svgRainShower)    
                 }
                 else{
-                    weather.isDay? weatherDescr.push(svgRain) : weatherDescr.push(svgNightRain)
+                    weather.isDay? weatherDescr.push(svgs.svgRain) : weatherDescr.push(svgs.svgNightRain)
                     };
                 };
             if(weather.weather[i].main == "Clear"){
-                weather.isDay? weatherDescr.push(svgSun) : weatherDescr.push(svgMoon);
+                weather.isDay? weatherDescr.push(svgs.svgSun) : weatherDescr.push(svgs.svgMoon);
             }
             if (weather.weather[i].main == "Clouds"){
                 if (weather.weather[i].description=='few clouds'){
-                    weather.isDay?weatherDescr.push(svgCloudSun) : weatherDescr.push(svgCloudMoon)
+                    weather.isDay?weatherDescr.push(svgs.svgCloudSun) : weatherDescr.push(svgs.svgCloudMoon)
                 }else{
-                weatherDescr.push(svgCloud)}};
-           if(weather.weather[i].main == "Mist"){weatherDescr.push(svgSmog)};
-           if(weather.weather[i].main=='Thunderstorm'){ weatherDescr.push(svgStorm)};
-           if(weather.weather[i].main=='Snow'){weatherDescr.push(svgSnow)};
+                weatherDescr.push(svgs.svgCloud)}};
+           if(weather.weather[i].main == "Mist"){weatherDescr.push(svgs.svgSmog)};
+           if(weather.weather[i].main=='Thunderstorm'){ weatherDescr.push(svgs.svgStorm)};
+           if(weather.weather[i].main=='Snow'){weatherDescr.push(svgs.svgSnow)};
 
             weatherDescrText.push(weather.weather[i].description);
         }
-        if (weather.wind.speed > 10){weatherDescr.push(svgWind)};
+        if (weather.wind.speed > 10){weatherDescr.push(svgs.svgWind)};
         weather.weatherDescprotion = {
                                             img: weatherDescr,
                                             text: weatherDescrText
@@ -125,11 +111,11 @@ class App extends React.Component{
     setTemperatureSVG(weather){
         let temperatureSVG;
         if (weather.temperature.max < 5) { 
-            temperatureSVG = svgTemperatureLow
+            temperatureSVG = svgs.svgTemperatureLow
          }else if (weather.temperature.max < 27){
-            temperatureSVG = svgTemperatureMedium
+            temperatureSVG = svgs.svgTemperatureMedium
          } else {
-            temperatureSVG = svgTemperatureHight
+            temperatureSVG = svgs.svgTemperatureHight
          }
          weather.temperatureSVG = temperatureSVG;
          return weather

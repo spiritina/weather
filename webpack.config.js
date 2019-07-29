@@ -5,11 +5,12 @@ module.exports = {
     mode: 'development',
     devtool: 'inline-source-map',
     entry: {
-        'bundle': './src/js/index.js',
+        'bundle.js': './src/js/index.js',
+       // 'css/style.css': './src/static/css/style.css'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name].js'
+        filename: '[name]'
     },
     devServer: {
         contentBase: './dist/html'
@@ -17,19 +18,17 @@ module.exports = {
      plugins: [
            new CopyPlugin([
             { from: './src/static/',
-              ignore: ['./src/static/img/','**/*.svg'] }
+              ignore: ['./src/static/img/','**/*.svg', '**.*.css'] },
+              {from: './src/js/components/slider/slider.css', to: './css'}
      ]),
    ],
   module: {
     rules: [
-      {
-        test: /\.сss$/i,
-        use: [
-          'handlebars-loader', 
-          'extract-loader',
-          'css-loader',
+     /* {
+        test: /\.сss$/,
+        use: ['style-loader','css-loader'
         ],
-      },
+      },*/
       
       {
         test: /\.js$/,

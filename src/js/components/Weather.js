@@ -17,7 +17,6 @@ this.props.deleteCity(city);
  
 render(){
     let weather = this.props.weather;
-    console.log(weather);
     let weatherDescrSVG = weather.weatherDescprotion.img.map((src, index) => <Icon className='temperature' 
                                                                                     key={index} 
                                                                                     glyph={src.id} 
@@ -39,19 +38,18 @@ render(){
             {btn}
             <div className="col">
                 <h2>{weather.city}, {weather.country}</h2>
+                <div className="row ">
+                    {weatherDescrSVG}{<Icon className='temperature' 
+                                            glyph={weather.temperatureSVG.id} 
+                                            viewBox={weather.temperatureSVG.viewBox} />}
+                </div>
                 <p>Max temperature: {Math.round(weather.temperature.max)} &#186; C</p>
                 <p>Humidity: {weather.humidity} %</p>
                 <p>Pressure: {weather.pressure} MP</p>
                 <p>Wind: {weather.wind.speed} m/s {weather.windDirection}</p>
                 {weatherDescrText}
             </div>
-            <div className="col">
-                <div className="row">
-                    {weatherDescrSVG}{<Icon className='temperature' 
-                                            glyph={weather.temperatureSVG.id} 
-                                            viewBox={weather.temperatureSVG.viewBox} />}
-                </div>
-            </div>
+          
         </div>
         )
 }

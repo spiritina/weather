@@ -1,0 +1,62 @@
+.arrows{
+    height:40px;
+    color: rgba(124,124,124,.8);
+   
+    cursor: pointer;
+   
+}
+.left, .right{
+    position: absolute; 
+    top: 50%;
+    margin-top: -20px;
+    z-index: 10;
+    background: none;
+    border: none;
+   
+}
+.left{
+    left: 20px;
+}
+.right{
+    right: 20px;
+}
+.inner-item{
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: all .8s ease-in-out;
+    height: 100%;
+}
+.inner-item.active{
+    opacity: 1;
+    visibility: visible;
+}
+
+.arrows:hover{
+    color: rgba(40,40,40,.8);
+}
+.slider{
+    position: relative;
+    width: 100%;
+    height: 377px;
+}
+.controlElement{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgb(124,124,124);
+    margin: 10px;
+}
+.controlElement.active{
+    background-color: rgb(40,40,40,.8)
+}
+.controls{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+}

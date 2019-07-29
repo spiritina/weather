@@ -1,3 +1,4 @@
+
 body {
  background: #fefefe;
  color: #424242;
@@ -7,6 +8,7 @@ body {
 }
 .temperature{
     height: 30px;
+    margin: 10px;
 }
 .col{
     display: flex;
@@ -14,11 +16,13 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     margin: 0;
+    width: 100%;
 }
 .row{
     display: flex;
-    justify-content: space-between;
-    align-items: center
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 .weather{
     box-sizing: border-box;
@@ -26,8 +30,8 @@ body {
     max-width: 400px;
     box-shadow: 4px 5px 7px gray;
     border: 1px solid darkgrey;
-    padding: 20px;
-    border-radius: 20px;
+    padding: 40px;
+    border-radius: 5px;
     font-size: 12px;
     width:auto;
     line-height: 1.2;
@@ -88,7 +92,7 @@ body {
     height: 50px;
 }
 .weather p{
-    margin: 0;
+    margin: 5px;
 }
 img{
     margin: 5px;
@@ -109,6 +113,6 @@ img{
         font-size: 16px;
     }
     .temperature{
-        height: 60px;;
+        height: 60px;
     }
 }
