@@ -7,7 +7,7 @@ class Weather extends React.Component{
 addCity=(event)=>{
     event.preventDefault();
     let city = this.props.weather.cityID;
-this.props.addCity(city);
+    this.props.addCity(city);
 }
 deleteCity = (event) =>{
     event.preventDefault();

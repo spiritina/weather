@@ -20,7 +20,6 @@ class Controls extends React.Component{
             controls.push(div);
             
         }
-        console.log(controls);
         return(
             <div className = "controls">
                 {controls}

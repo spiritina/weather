@@ -13,7 +13,7 @@ class SavedCities extends React.Component{
     } 
 
     render(){
-        let town = this.props.cities, cities;
+        let town = this.props.cities, 
         cities = Object.keys(town).map(city => <Weather key={town[city].city}
                                                  weather={town[city].weather}
                                                  deleteCity={this.props.deleteCity} />);

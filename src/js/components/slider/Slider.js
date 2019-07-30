@@ -7,7 +7,6 @@ import Icon from '../Icon';
 class Slider extends React.Component {
     constructor(props){
         super(props);
-        console.log(props.children);
         this.state = {
             active: 0,
             maxSlide: this.props.children.length -1,
@@ -36,18 +35,29 @@ class Slider extends React.Component {
                 this.state.reverse&&this.onPrev();
         }
     }
-   shouldComponentUpdate = (nextProps, nextState) => {
+    componentDidMount = () => {
+        this.setState({
+            active: 0,
+            maxSlide: this.props.children.length -1,
+            autoplay: this.props.autoplay || false,
+            reverse: false
+        })
+    }
+
+    shouldComponentUpdate = (nextProps, nextState) => {
      return   this.props.children != nextProps.children || this.state.active != nextState.active;
     }
     componentWillUpdate = (nextProps, nextState) =>{
         this.setState(prevState =>({ maxSlide: nextProps.children.length -1}))
         if(nextProps.children.length<this.props.children.length){
             this.setState((prevState, prevProps) => ({
-                active: prevState.active-1}))
+                active: prevState.active-1,
+                maxSlide: prevState.maxSlide-1
+            }))
         };
         if(nextProps.children.length>this.props.children.length){
             this.setState((prevState, prevProps) => ({
-                active: prevState.active+1}))
+                maxSlide: nextProps.children.length}))
         }
     } 
 
@@ -79,7 +89,7 @@ class Slider extends React.Component {
         <div className = "item-container">
             {items}
         </div>
-        <Controls numberOfSlides = {this.state.maxSlide}
+        <Controls numberOfSlides = {this.props.children.length-1}
                   onClick = {this.goToSlide}
                   active={this.state.active}
                     />
