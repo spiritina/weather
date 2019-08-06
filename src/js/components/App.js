@@ -1,189 +1,52 @@
 import React from 'react';
 import Weather from './Weather';
 import Header from './Header';
-import MyError from './MyError';
-import svgs from '../maps/svgs'
-import getCurrentWeather from '../API';
 import SavedCities from './SavedCities';
+import { connect} from 'react-redux';
+import {PropTypes} from 'prop-types'
+import { bindActionCreators } from 'redux'
+
+
 
 class App extends React.Component{
     constructor(props){
         super(props)
-        let newCity = '', savedCities=[], curentWeatherInSavedCities=[];
-        if(localStorage.getItem('weathermain')){
-            newCity = JSON.parse(localStorage.getItem('weathermain'));
-        };
-        if(localStorage.getItem('savedCities')){
-            savedCities = JSON.parse(JSON.parse(localStorage.getItem('savedCities')));
-            let savedCity = {}, str;
-            for (let i=0; i<savedCities.length; i++){
-               
-                savedCity = {
-                    city: savedCities[i],
-                    weather:''
-                };
-                this.onSubmit(savedCity, savedCities[i],'id' );
-            }
-
-        }
-        this.state = {
-            main:{
-                weather: '',
-                city: newCity.city,
-                error: false
-            },
-            savedCities: savedCities,
-            curentWeatherInSavedCities: {}
-        }
-        if (this.state.main.city){
-            this.onSubmit(this.state.main, 'main', 'q');
-        }
+        this.state = this.props.mystate;
     }
     addCity= (city) =>{
-        console.log('add')
-        let cities = this.state.savedCities;
-        if(cities.indexOf(city)===-1){
-            cities.push(city);
-            this.setState({'savedCities': cities});
-            this.onSubmit({city: city}, city,'id' );
+        console.log(this.state.city)
+        let cities = Object.assign(this.state.savedCities);
+        if(cities.indexOf(this.state.city)===-1){
+            this.props.addCity(this.state.city);
+            cities.push(this.state.city)
             this.saveItem('savedCities', JSON.stringify(cities));
         }
     }
-    setWindDirection(weather){
-         let windDirectionDeg = weather.wind.direction;
-         let windDirection;
-         if (windDirectionDeg<20&&windDirectionDeg>340){
-             windDirection = 'East'
-            } else if (windDirectionDeg<70){
-                windDirection = 'North-East'
-            } else  if (windDirectionDeg<110) {
-                windDirection = 'North'
-            }else  if (windDirectionDeg<165) {
-                windDirection = 'North-West'
-            }else  if (windDirectionDeg<200) {
-                windDirection = 'West'
-            }else  if (windDirectionDeg<245) {
-                windDirection = 'South-West'
-            }else  if (windDirectionDeg<300) {
-                windDirection = 'South'
-            }else  if (windDirectionDeg<=340) {
-                windDirection = 'South-East'
-            }else if (windDirection==undefined){
-                windDirection = ''
-            }
-            weather.windDirection = windDirection;
-            return weather;
-    }
-
-    setWeatherDescription(weather){
-        let weatherDescr = [];
-        let weatherDescrText = [];
-        for(let i=0; i < weather.weather.length; i++){
-            if(weather.weather[i].main == "Rain"){
-                if(weather.weather[i].description=='heavy intensity shower rain'||weather.weather[i].description=='light intensity shower rain'||weather.weather[i].description=='medium intensity shower rain'){
-                    weatherDescr.push(svgs.svgRainShower)    
-                }
-                else{
-                    weather.isDay? weatherDescr.push(svgs.svgRain) : weatherDescr.push(svgs.svgNightRain)
-                    };
-                };
-            if(weather.weather[i].main == "Clear"){
-                weather.isDay? weatherDescr.push(svgs.svgSun) : weatherDescr.push(svgs.svgMoon);
-            }
-            if (weather.weather[i].main == "Clouds"){
-                if (weather.weather[i].description=='few clouds'){
-                    weather.isDay?weatherDescr.push(svgs.svgCloudSun) : weatherDescr.push(svgs.svgCloudMoon)
-                }else{
-                weatherDescr.push(svgs.svgCloud)}};
-           if(weather.weather[i].main == "Mist"){weatherDescr.push(svgs.svgSmog)};
-           if(weather.weather[i].main=='Thunderstorm'){ weatherDescr.push(svgs.svgStorm)};
-           if(weather.weather[i].main=='Snow'){weatherDescr.push(svgs.svgSnow)};
-
-            weatherDescrText.push(weather.weather[i].description);
-        }
-        if (weather.wind.speed > 10){weatherDescr.push(svgs.svgWind)};
-        weather.weatherDescprotion = {
-                                            img: weatherDescr,
-                                            text: weatherDescrText
-        }
-        return weather;
-    }
-    setTemperatureSVG(weather){
-        let temperatureSVG;
-        if (weather.temperature.max < 5) { 
-            temperatureSVG = svgs.svgTemperatureLow
-         }else if (weather.temperature.max < 27){
-            temperatureSVG = svgs.svgTemperatureMedium
-         } else {
-            temperatureSVG = svgs.svgTemperatureHight
-         }
-         weather.temperatureSVG = temperatureSVG;
-         return weather
-        }
     saveItem = (key, item)=>{
         localStorage.setItem(key, JSON.stringify(item));
     }
         
-
-    onSubmit = (obj, key, code) => {
-        getCurrentWeather(obj.city, code)
-        .then(result => {   
-            result = this.setTemperatureSVG(result);
-            result = this.setWeatherDescription(result);
-            result = this.setWindDirection(result);
-            obj.weather = result;
-            obj.error = false;
-            if (key==='main'){
-            this.setState({[key]: {...obj, 
-                                   city:'' },
-                            });
-            this.saveItem(`weather${key}`, obj);} else {
-                let newCurrentWeather = this.state.curentWeatherInSavedCities;
-                newCurrentWeather[key] = obj;
-                this.setState({curentWeatherInSavedCities: newCurrentWeather});
-            }
-        },
-        error => {
-                obj = {
-                    city: '',
-                    weather:'',
-                    error:true
-                }
-                if(key==='main'){
-                this.setState({[key]: obj});
-                } else return obj;
-            }
-            
-        );
+    shouldComponentUpdate(nextProps, nextState){
+        return this.state!==nextState;
     }
-   
-    onChange = (event) =>{
-        let obj=this.state.main;
-        obj.city = event.target.value;
-        this.setState({'main':obj});
-    }
-    deleteCity = (i) => {
-        let savedCities = this.state.savedCities;
-        savedCities.splice(savedCities.indexOf(i),1);
-        this.setState({savedCities: savedCities});
-        this.saveItem('savedCities', JSON.stringify(savedCities));
-        let curentCities = this.state.curentWeatherInSavedCities;
-        delete curentCities[i];
-
+  
+    componentWillReceiveProps(newProps){
+        this.setState(newProps.mystate)
     }
 
     render(){
         let weatherComponent=null, curentCities=null;
-        if (this.state.curentWeatherInSavedCities){
-            curentCities = <SavedCities cities = {this.state.curentWeatherInSavedCities} 
-                                         deleteCity={this.deleteCity}/>
+        if (this.state.savedCities){
+            curentCities = <SavedCities />
         }
-        if (this.state.main.weather){ weatherComponent = <Weather weather={this.state.main.weather}
-                                                                  addCity={this.addCity} />                                                         
-    } else if(this.state.main.error){ weatherComponent = <MyError error={this.state.main.error} /> } else{ weatherComponent = null};
+        if (this.state.city){console.log(this.state.city);
+             weatherComponent = <Weather city = {this.state.city}
+                                        code = 'q'
+                                        addCity = {this.addCity} />                                                         
+    } 
         return(
         <div> 
-            <Header city={this.state.main} onChange={this.onChange} onSubmit={this.onSubmit}/>
+            <Header />
             {weatherComponent}
             {curentCities}
        </div>
@@ -191,4 +54,21 @@ class App extends React.Component{
 }
 }
 
-export default App;
+
+const mapStateToProps = (state) => ({
+    mystate: state
+})
+App.propTypes = {
+    mystate: PropTypes.object.isRequired
+}
+
+
+const onChange = city => ({   type: 'NEW_CITY_MAIN', 
+                                city: city})
+
+const addCity = city => ({   type: 'ADD_NEW_CITY_TO_SAVED', 
+                            city: city})
+const mapDispatchToProps = (dispatch, ownProps) =>  {
+   return bindActionCreators({onChange, addCity}, dispatch)
+}
+export default connect(mapStateToProps, mapDispatchToProps, null)(App);

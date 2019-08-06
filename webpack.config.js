@@ -20,23 +20,17 @@ module.exports = {
             { from: './src/static/',
               ignore: ['./src/static/img/','**/*.svg', '**.*.css'] },
               {from: './src/js/components/slider/slider.css', to: './css'}
-     ]),
+              ]),
    ],
+   
   module: {
     rules: [
-     /* {
-        test: /\.сss$/,
-        use: ['style-loader','css-loader'
-        ],
-      },*/
-      
       {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader"
       }},
-      
       {
         test: /\.svg$/,
         use: [

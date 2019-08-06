@@ -1,6 +1,7 @@
 import React from 'react';
 import Search from './Search';
 import Menu from './Menu';
+import svgSearch from '../../static/img/src/search-solid.svg';
 
 class Header extends React.Component{
     constructor(){
